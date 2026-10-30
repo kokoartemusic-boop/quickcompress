@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free QR Code Generator Online - Create and Download PNG/SVG</title>
+    <meta name="description" content="Generate QR codes instantly in your browser. Free, private, no upload required. Customize size, colors, and download as PNG or SVG.">
+    <meta name="claude:viewport-fit-sides" content="cover">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --fg: #1e293b;
+            --accent: #2563eb;
+            --card-bg: #ffffff;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0f172a;
+                --fg: #f1f5f9;
+                --accent: #60a5fa;
+                --card-bg: #1e293b;
+                --text-muted: #94a3b8;
+                --border: #334155;
+                color-scheme: dark;
+            }
+        }
+        :root[data-theme="dark"] {
+            --bg: #0f172a;
+            --fg: #f1f5f9;
+            --accent: #60a5fa;
+            --card-bg: #1e293b;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            color-scheme: dark;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            text-decoration: none;
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav .nav-links a:hover, nav .nav-links a.active {
+            color: var(--accent);
+        }
+
+        header { padding: 2.5rem 1rem 1.5rem; text-align: center; }
+        h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        .controls {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .control-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .control-group input[type="text"],
+        .control-group textarea,
+        .control-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .control-group input[type="text"]:focus,
+        .control-group textarea:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .control-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .qr-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 280px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin: 1.5rem auto 2rem;
+            max-width: 600px;
+            padding: 1rem;
+        }
+        .qr-preview svg, .qr-preview canvas, .qr-preview img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+        button, a.download-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-block;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+        button:hover, a.download-btn:hover { opacity: 0.9; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button.secondary { background: var(--text-muted); }
+
+        /* SEO Content Section */
+        .seo-content {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+        }
+        .seo-content h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--fg);
+        }
+        .seo-content p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .faq-item {
+            margin-bottom: 1.25rem;
+        }
+        .faq-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.35rem;
+            color: var(--fg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="brand">QuickCompress</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Image Compressor</a></li>
+            <li><a href="qr-code.html" class="active">QR Code Generator</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Free QR Code Generator Online</h1>
+        <p class="subtitle">Create QR codes instantly in your browser. Customize size, colors, and download as PNG or SVG — completely free and private.</p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <div class="control-group">
+                <label for="qr-input">Enter text or URL</label>
+                <textarea id="qr-input" placeholder="https://example.com or any text..."></textarea>
+            </div>
+
+            <div class="options-row">
+                <div class="control-group">
+                    <label for="qr-size">Size</label>
+                    <select id="qr-size">
+                        <option value="128">Small (128×128)</option>
+                        <option value="256" selected>Medium (256×256)</option>
+                        <option value="512">Large (512×512)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="qr-fg-color">Foreground color</label>
+                    <input type="color" id="qr-fg-color" value="#000000">
+                </div>
+                <div class="control-group">
+                    <label for="qr-bg-color">Background color</label>
+                    <input type="color" id="qr-bg-color" value="#ffffff">
+                </div>
+            </div>
+        </div>
+
+        <div class="qr-preview" id="qr-preview">
+            <div style="color: var(--text-muted); text-align: center;">Enter text above to generate QR code</div>
+        </div>
+
+        <div class="download-buttons">
+            <button id="btn-download-png" disabled>Download PNG</button>
+            <button id="btn-download-svg" class="secondary" disabled>Download SVG</button>
+        </div>
+
+        <section class="seo-content">
+            <h2>How to create a QR code</h2>
+            <p>Creating a QR code with our free generator is as simple as typing or pasting your content into the input box above. Whether you need to encode a website URL, contact information, Wi-Fi credentials, or any plain text, just enter it and the QR code appears instantly. You can then fine-tune the appearance: choose from three preset sizes (small, medium, or large) to fit your use case, pick a foreground color for the code pattern, and select a background color — transparent backgrounds work great for stickers or dark-mode designs. When you are satisfied, click Download PNG for a raster image perfect for web and print, or Download SVG for a lossless vector file that scales to any size without quality loss.</p>
+
+            <h2>Why use this QR code generator</h2>
+            <p>Unlike many online tools that send your data to a server before returning an image, our generator runs entirely in your browser using a lightweight JavaScript library. That means zero network requests, zero data collection, and zero latency — the code renders the moment you type. The interface is ad-free, requires no account, and works offline after the first load. Developers and designers appreciate the SVG export for crisp assets at any resolution, while marketers and small businesses value the color customization for brand consistency. Because everything happens client-side, it is also the safest choice for encoding sensitive information like internal URLs or personal contact details.</p>
+
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>Is this QR code generator really free?</h3>
+                <p>Yes, it is 100% free with no hidden costs, no sign-up, and no limits on how many QR codes you can create or download.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Does my data leave my device?</h3>
+                <p>No. The QR code is generated entirely in your browser using client-side JavaScript. Nothing is ever sent to our servers or any third party.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Which formats can I download?</h3>
+                <p>You can download your QR code as a PNG raster image (ideal for web, email, and most print uses) or as an SVG vector file (perfect for large-format printing, design tools, and infinite scaling without pixelation).</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I use these QR codes commercially?</h3>
+                <p>Absolutely. The QR codes you generate are standard-compliant and royalty-free. You own the output and can use it for any personal or commercial purpose without attribution.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Your data never leaves your device.
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this QR code generator really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it is 100% free with no hidden costs, no sign-up, and no limits on how many QR codes you can create or download."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does my data leave my device?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The QR code is generated entirely in your browser using client-side JavaScript. Nothing is ever sent to our servers or any third party."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which formats can I download?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can download your QR code as a PNG raster image (ideal for web, email, and most print uses) or as an SVG vector file (perfect for large-format printing, design tools, and infinite scaling without pixelation)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use these QR codes commercially?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. The QR codes you generate are standard-compliant and royalty-free. You own the output and can use it for any personal or commercial purpose without attribution."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        const qrInput = document.getElementById('qr-input');
+        const qrSize = document.getElementById('qr-size');
+        const qrFgColor = document.getElementById('qr-fg-color');
+        const qrBgColor = document.getElementById('qr-bg-color');
+        const qrPreview = document.getElementById('qr-preview');
+        const btnDownloadPng = document.getElementById('btn-download-png');
+        const btnDownloadSvg = document.getElementById('btn-download-svg');
+
+        let currentQRCode = null;
+        let currentDataUrl = null;
+        let currentSvgString = null;
+
+        function generateQRCode() {
+            const text = qrInput.value.trim();
+            if (!text) {
+                qrPreview.innerHTML = '<div style="color: var(--text-muted); text-align: center;">Enter text above to generate QR code</div>';
+                btnDownloadPng.disabled = true;
+                btnDownloadSvg.disabled = true;
+                currentQRCode = null;
+                currentDataUrl = null;
+                currentSvgString = null;
+                return;
+            }
+
+            const size = parseInt(qrSize.value);
+            const fg = qrFgColor.value;
+            const bg = qrBgColor.value;
+
+            // Generate SVG
+            QRCode.toString(text, {
+                type: 'svg',
+                width: size,
+                margin: 2,
+                color: {
+                    dark: fg,
+                    light: bg
+                }
+            }, (err, svgString) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                currentSvgString = svgString;
+
+                // Render SVG in preview
+                qrPreview.innerHTML = svgString;
+
+                // Generate PNG data URL for download
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+
+                // Fill background
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, size, size);
+
+                // Draw QR code from SVG onto canvas
+                const img = new Image();
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, size, size);
+                    currentDataUrl = canvas.toDataURL('image/png');
+                    btnDownloadPng.disabled = false;
+                    btnDownloadSvg.disabled = false;
+                };
+                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+            });
+        }
+
+        // Debounce input
+        let debounceTimer = null;
+        qrInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(generateQRCode, 100);
+        });
+
+        qrSize.addEventListener('change', generateQRCode);
+        qrFgColor.addEventListener('input', generateQRCode);
+        qrBgColor.addEventListener('input', generateQRCode);
+
+        btnDownloadPng.addEventListener('click', () => {
+            if (!currentDataUrl) return;
+            const a = document.createElement('a');
+            a.href = currentDataUrl;
+            a.download = 'qrcode.png';
+            a.click();
+        });
+
+        btnDownloadSvg.addEventListener('click', () => {
+            if (!currentSvgString) return;
+            const blob = new Blob([currentSvgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'qrcode.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Initial generation if there's content (e.g., from page reload with value)
+        generateQRCode();
+    </script>
+</body>
+</html>
