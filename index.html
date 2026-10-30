@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickCompress — Browser-based Image Optimizer</title>
+    <meta name="claude:viewport-fit-sides" content="cover">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --fg: #1e293b;
+            --accent: #2563eb;
+            --card-bg: #ffffff;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0f172a;
+                --fg: #f1f5f9;
+                --accent: #60a5fa;
+                --card-bg: #1e293b;
+                --text-muted: #94a3b8;
+                --border: #334155;
+                color-scheme: dark;
+            }
+        }
+        :root[data-theme="dark"] {
+            --bg: #0f172a;
+            --fg: #f1f5f9;
+            --accent: #60a5fa;
+            --card-bg: #1e293b;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            color-scheme: dark;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            line-height: 1.5;
+        }
+
+        header { padding: 2rem 0; text-align: center; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        .controls {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--border);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .drop-zone:hover { border-color: var(--accent); }
+
+        .image-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .image-card {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            overflow: hidden;
+        }
+        .image-card img { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; }
+        .details { flex-grow: 1; min-width: 0; }
+        .details h4 { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .details p { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+        button, a.download-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            text-align: center;
+        }
+        a.download-btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>QuickCompress</h1>
+        <p class="subtitle">Compress your images directly in your browser. Fast, private, and free.</p>
+    </header>
+
+    <div class="controls">
+        <div class="drop-zone" id="drop-zone">
+            Drag & drop images here or <strong>click to select</strong>
+            <input type="file" id="file-input" multiple accept="image/*" hidden>
+        </div>
+        <label>
+            Quality: <input type="range" id="quality" min="10" max="100" value="80">
+            <span id="quality-val">80%</span>
+        </label>
+    </div>
+
+    <div class="image-list" id="image-list"></div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const dropZone = document.getElementById('drop-zone');
+        const imageList = document.getElementById('image-list');
+        const qualityInput = document.getElementById('quality');
+        const qualityVal = document.getElementById('quality-val');
+
+        qualityInput.oninput = () => qualityVal.textContent = qualityInput.value + '%';
+
+        dropZone.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => handleFiles(e.target.files);
+
+        dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; };
+        dropZone.ondragleave = () => dropZone.style.borderColor = 'var(--border)';
+        dropZone.ondrop = (e) => { e.preventDefault(); handleFiles(e.dataTransfer.files); };
+
+        async function handleFiles(files) {
+            for (const file of Array.from(files)) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => compress(img, file.name, file.size, file.type);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Helper to test if canvas toDataURL supports a given MIME type
+        function supportsMimeType(mime) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1;
+            canvas.height = 1;
+            return canvas.toDataURL(mime).indexOf(mime) === 5;
+        }
+
+        async function compress(img, name, originalSize, originalType) {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            const quality = qualityInput.value / 100;
+
+            let targetMime = originalType;
+            if (originalType === 'image/png') {
+                targetMime = supportsMimeType('image/webp') ? 'image/webp' : 'image/jpeg';
+            } else if (originalType !== 'image/jpeg' && originalType !== 'image/webp') {
+                // Default fallback for other types if any
+                targetMime = 'image/jpeg';
+            }
+
+            let dataUrl = canvas.toDataURL(targetMime, quality);
+            let binary = atob(dataUrl.split(',')[1]);
+            let newSize = binary.length;
+
+            let isAlreadyOptimized = false;
+            if (newSize >= originalSize) {
+                // Keep original file
+                isAlreadyOptimized = true;
+                newSize = originalSize;
+                // We can reconstruct dataUrl from original file or just let user download original/fallback
+                // Wait, if it's already optimized, we want to keep the original file data or view original preview
+                // Let's create a dataUrl from the original reader/file or canvas fallback. But wait, we can just use the img.src or create a dataUrl of original if needed, or we can use the canvas without compression or re-encode original. Actually, since we have img.src, img.src is already the original file's data URL (from FileReader)!
+                dataUrl = img.src;
+            }
+
+            // Determine extension
+            const lastDotIndex = name.lastIndexOf('.');
+            const baseName = lastDotIndex !== -1 ? name.substring(0, lastDotIndex) : name;
+            let ext = 'jpg';
+            if (!isAlreadyOptimized) {
+                if (targetMime === 'image/webp') ext = 'webp';
+                else if (targetMime === 'image/jpeg') ext = 'jpg';
+                else if (targetMime === 'image/png') ext = 'png';
+            } else {
+                if (lastDotIndex !== -1) {
+                    ext = name.substring(lastDotIndex + 1);
+                }
+            }
+            const newFileName = `${baseName}.${ext}`;
+
+            let percentText = '';
+            if (isAlreadyOptimized) {
+                percentText = 'Already optimized';
+            } else {
+                const percent = ((1 - newSize / originalSize) * 100).toFixed(1);
+                percentText = `Saved ${percent}%`;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            card.innerHTML = `
+                <img src="${dataUrl}">
+                <div class="details">
+                    <h4>${name}</h4>
+                    <p>${(originalSize/1024).toFixed(1)} KB → ${(newSize/1024).toFixed(1)} KB (${percentText})</p>
+                </div>
+                <a href="${dataUrl}" download="${newFileName}" class="download-btn">Download</a>
+            `;
+            imageList.appendChild(card);
+        }
+    </script>
+</body>
+</html>
