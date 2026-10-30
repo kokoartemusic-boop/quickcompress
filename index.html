@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCompress — Browser-based Image Optimizer</title>
+    <title>Free Image Compressor Online - Reduce JPG, PNG, WebP Size</title>
+    <meta name="description" content="QuickCompress is a free, private online image compressor that reduces JPG, PNG, and WebP file sizes instantly in your browser. No upload required.">
     <meta name="claude:viewport-fit-sides" content="cover">
     <style>
         :root {
@@ -44,11 +45,43 @@
             padding-right: max(16px, env(safe-area-inset-right, 0px));
             padding-top: env(safe-area-inset-top, 0px);
             padding-bottom: env(safe-area-inset-bottom, 0px);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        header { padding: 2rem 0; text-align: center; }
-        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        /* Navbar */
+        nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            text-decoration: none;
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav .nav-links a:hover, nav .nav-links a.active {
+            color: var(--accent);
+        }
+
+        header { padding: 2.5rem 1rem 1.5rem; text-align: center; }
+        h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }
         p.subtitle { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
 
         .controls {
@@ -78,7 +111,8 @@
             flex-direction: column;
             gap: 1rem;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
         }
 
         .image-card {
@@ -108,26 +142,145 @@
             text-align: center;
         }
         a.download-btn:hover { opacity: 0.9; }
+
+        /* SEO Content Section */
+        .seo-content {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+        }
+        .seo-content h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--fg);
+        }
+        .seo-content p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .faq-item {
+            margin-bottom: 1.25rem;
+        }
+        .faq-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.35rem;
+            color: var(--fg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
+    <nav>
+        <a href="#" class="brand">QuickCompress</a>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Image Compressor</a></li>
+        </ul>
+    </nav>
+
     <header>
-        <h1>QuickCompress</h1>
+        <h1>Free Image Compressor Online</h1>
         <p class="subtitle">Compress your images directly in your browser. Fast, private, and free.</p>
     </header>
 
-    <div class="controls">
-        <div class="drop-zone" id="drop-zone">
-            Drag & drop images here or <strong>click to select</strong>
-            <input type="file" id="file-input" multiple accept="image/*" hidden>
+    <main>
+        <div class="controls">
+            <div class="drop-zone" id="drop-zone">
+                Drag & drop images here or <strong>click to select</strong>
+                <input type="file" id="file-input" multiple accept="image/*" hidden>
+            </div>
+            <label style="display: flex; align-items: center; justify-content: space-between; font-size: 0.95rem; color: var(--text-muted);">
+                <span>Quality: <strong id="quality-val" style="color: var(--fg);">80%</strong></span>
+                <input type="range" id="quality" min="10" max="100" value="80" style="accent-color: var(--accent);">
+            </label>
         </div>
-        <label>
-            Quality: <input type="range" id="quality" min="10" max="100" value="80">
-            <span id="quality-val">80%</span>
-        </label>
-    </div>
 
-    <div class="image-list" id="image-list"></div>
+        <div class="image-list" id="image-list"></div>
+
+        <section class="seo-content">
+            <h2>How to compress images online</h2>
+            <p>Compressing your digital images with QuickCompress is fast, intuitive, and entirely client-side. To get started, simply drag and drop your JPG, PNG, or WebP files into the designated drop zone above, or click anywhere inside the box to select images directly from your device. Once loaded, you can fine-tune the compression quality using the slider to strike the ideal balance between visual fidelity and file size. As soon as processing completes, you can download your optimized images individually with a single click. No registration, software installation, or waiting for server queues is required.</p>
+
+            <h2>Why use QuickCompress</h2>
+            <p>In today's fast-paced web environment, large image files can significantly slow down your website loading speeds and consume unnecessary storage space. QuickCompress offers a streamlined solution designed for developers, designers, bloggers, and everyday users who need quick optimization without sacrificing quality. Because all processing happens locally using cutting-edge browser APIs, you enjoy lightning-fast bulk compression speeds. Furthermore, our zero-upload architecture ensures absolute privacy and security, making it the safest tool for handling personal, confidential, or proprietary images.</p>
+
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>Is it free?</h3>
+                <p>Yes, QuickCompress is 100% free to use with no hidden fees, subscription requirements, or limits on how many images you can compress.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Are my images uploaded?</h3>
+                <p>No, your images are never uploaded to any remote server. All compression happens entirely within your web browser using client-side technologies.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Which formats work?</h3>
+                <p>QuickCompress supports all popular web image formats including JPEG, PNG, and modern WebP files for maximum compatibility and efficiency.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Will quality drop?</h3>
+                <p>You have full control over the compression quality slider. By adjusting the settings, you can achieve substantial file size reductions while keeping visual quality virtually indistinguishable from the original.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Your images never leave your device.
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is it free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, QuickCompress is 100% free to use with no hidden fees, subscription requirements, or limits on how many images you can compress."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my images uploaded?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, your images are never uploaded to any remote server. All compression happens entirely within your web browser using client-side technologies."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which formats work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "QuickCompress supports all popular web image formats including JPEG, PNG, and modern WebP files for maximum compatibility and efficiency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will quality drop?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You have full control over the compression quality slider. By adjusting the settings, you can achieve substantial file size reductions while keeping visual quality virtually indistinguishable from the original."
+          }
+        }
+      ]
+    }
+    </script>
 
     <script>
         const fileInput = document.getElementById('file-input');
@@ -179,7 +332,6 @@
             if (originalType === 'image/png') {
                 targetMime = supportsMimeType('image/webp') ? 'image/webp' : 'image/jpeg';
             } else if (originalType !== 'image/jpeg' && originalType !== 'image/webp') {
-                // Default fallback for other types if any
                 targetMime = 'image/jpeg';
             }
 
@@ -189,16 +341,11 @@
 
             let isAlreadyOptimized = false;
             if (newSize >= originalSize) {
-                // Keep original file
                 isAlreadyOptimized = true;
                 newSize = originalSize;
-                // We can reconstruct dataUrl from original file or just let user download original/fallback
-                // Wait, if it's already optimized, we want to keep the original file data or view original preview
-                // Let's create a dataUrl from the original reader/file or canvas fallback. But wait, we can just use the img.src or create a dataUrl of original if needed, or we can use the canvas without compression or re-encode original. Actually, since we have img.src, img.src is already the original file's data URL (from FileReader)!
                 dataUrl = img.src;
             }
 
-            // Determine extension
             const lastDotIndex = name.lastIndexOf('.');
             const baseName = lastDotIndex !== -1 ? name.substring(0, lastDotIndex) : name;
             let ext = 'jpg';
