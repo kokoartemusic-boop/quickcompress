@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Word Counter and Character Counter Online</title>
+    <meta name="description" content="Count words, characters, sentences and paragraphs instantly. Free online word counter with reading time. Your text stays in your browser.">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --fg: #1e293b;
+            --accent: #2563eb;
+            --card-bg: #ffffff;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0f172a;
+                --fg: #f1f5f9;
+                --accent: #60a5fa;
+                --card-bg: #1e293b;
+                --text-muted: #94a3b8;
+                --border: #334155;
+                color-scheme: dark;
+            }
+        }
+        :root[data-theme="dark"] {
+            --bg: #0f172a;
+            --fg: #f1f5f9;
+            --accent: #60a5fa;
+            --card-bg: #1e293b;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            color-scheme: dark;
+        }
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            line-height: 1.6;
+        }
+        nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        nav .brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            text-decoration: none;
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav .nav-links a:hover, nav .nav-links a.active {
+            color: var(--accent);
+        }
+        header { padding: 2.5rem 1rem 1.5rem; text-align: center; }
+        h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+        .tool {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        textarea {
+            width: 100%;
+            min-height: 260px;
+            box-sizing: border-box;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--fg);
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+        }
+        textarea:focus { outline: 2px solid var(--accent); }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        .stat {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .stat .num { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .stat .label { font-size: 0.8rem; color: var(--text-muted); }
+        .actions { display: flex; gap: 0.75rem; }
+        button {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        button.secondary { background: var(--text-muted); }
+        button:hover { opacity: 0.9; }
+        .seo-content {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+        }
+        .seo-content h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--fg);
+        }
+        .seo-content p { color: var(--text-muted); margin-bottom: 1rem; }
+        .faq-item { margin-bottom: 1.25rem; }
+        .faq-item h3 { font-size: 1.1rem; margin-bottom: 0.35rem; color: var(--fg); }
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="brand">QuickCompress</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Image Compressor</a></li>
+            <li><a href="qr-code.html">QR Code Generator</a></li>
+            <li><a href="word-counter.html" class="active">Word Counter</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Free Word Counter and Character Counter</h1>
+        <p class="subtitle">Type or paste your text and see the counts update instantly.</p>
+    </header>
+
+    <main>
+        <div class="tool">
+            <textarea id="text" placeholder="Start typing or paste your text here..."></textarea>
+            <div class="stats">
+                <div class="stat"><div class="num" id="words">0</div><div class="label">Words</div></div>
+                <div class="stat"><div class="num" id="chars">0</div><div class="label">Characters</div></div>
+                <div class="stat"><div class="num" id="chars-no-space">0</div><div class="label">Characters (no spaces)</div></div>
+                <div class="stat"><div class="num" id="sentences">0</div><div class="label">Sentences</div></div>
+                <div class="stat"><div class="num" id="paragraphs">0</div><div class="label">Paragraphs</div></div>
+                <div class="stat"><div class="num" id="reading">0 min</div><div class="label">Reading time</div></div>
+            </div>
+            <div class="actions">
+                <button id="copy-btn">Copy text</button>
+                <button id="clear-btn" class="secondary">Clear</button>
+            </div>
+        </div>
+
+        <section class="seo-content">
+            <h2>How to count words online</h2>
+            <p>Counting words with this tool takes a few seconds. Click inside the text box above and type your text, or paste something you have already written, such as an essay, an article, a social media post or an email. The numbers above the buttons update with every key you press, so you never have to click a calculate button. You will see the number of words, characters with spaces, characters without spaces, sentences and paragraphs. The reading time is an estimate based on an average reading speed of 200 words per minute. When you are finished, use the Copy text button to copy your text, or the Clear button to empty the box and start again.</p>
+
+            <h2>Why use this word counter</h2>
+            <p>Many writing tasks come with a limit. Students have essay word limits, writers have article lengths to meet, and social media posts have character limits. This counter gives you the numbers you need without registration or installation. The counting runs inside your browser using JavaScript on this page, and the text you type is not sent to a server by this tool. It works on phones, tablets and computers, so you can check your length wherever you write. Because the character count is shown both with and without spaces, it also helps with forms and applications that measure length in different ways.</p>
+
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>Is this word counter free?</h3>
+                <p>Yes. You can use it as often as you like without paying and without creating an account.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Is my text uploaded anywhere?</h3>
+                <p>No. The counting happens in your browser and this tool does not send your text to a server.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How is the reading time calculated?</h3>
+                <p>The reading time is the number of words divided by 200, which is a common average reading speed, rounded up to the next minute.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How are sentences and paragraphs counted?</h3>
+                <p>Sentences are counted by the full stops, question marks and exclamation marks in your text. Paragraphs are blocks of text separated by a blank line.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Your text stays in your browser.
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this word counter free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can use it as often as you like without paying and without creating an account."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my text uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The counting happens in your browser and this tool does not send your text to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is the reading time calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The reading time is the number of words divided by 200, which is a common average reading speed, rounded up to the next minute."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are sentences and paragraphs counted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sentences are counted by the full stops, question marks and exclamation marks in your text. Paragraphs are blocks of text separated by a blank line."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script>
+        const textEl = document.getElementById('text');
+        const out = {
+            words: document.getElementById('words'),
+            chars: document.getElementById('chars'),
+            noSpace: document.getElementById('chars-no-space'),
+            sentences: document.getElementById('sentences'),
+            paragraphs: document.getElementById('paragraphs'),
+            reading: document.getElementById('reading')
+        };
+
+        function update() {
+            const text = textEl.value;
+            const trimmed = text.trim();
+            const words = trimmed ? trimmed.split(/\s+/).length : 0;
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+            const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+
+            out.words.textContent = words;
+            out.chars.textContent = text.length;
+            out.noSpace.textContent = text.replace(/\s/g, '').length;
+            out.sentences.textContent = sentences;
+            out.paragraphs.textContent = paragraphs;
+
+            if (words === 0) {
+                out.reading.textContent = '0 min';
+            } else {
+                out.reading.textContent = Math.ceil(words / 200) + ' min';
+            }
+        }
+
+        textEl.addEventListener('input', update);
+
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            textEl.value = '';
+            update();
+            textEl.focus();
+        });
+
+        document.getElementById('copy-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('copy-btn');
+            try {
+                await navigator.clipboard.writeText(textEl.value);
+            } catch (e) {
+                textEl.select();
+                document.execCommand('copy');
+            }
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = 'Copy text'; }, 1500);
+        });
+
+        update();
+    </script>
+</body>
+</html>
