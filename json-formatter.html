@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free JSON Formatter and Validator Online</title>
+    <meta name="description" content="Format, beautify, minify and validate JSON online. Paste your JSON, see errors instantly and copy the result. Free and runs in your browser.">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --fg: #1e293b;
+            --accent: #2563eb;
+            --card-bg: #ffffff;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --ok: #15803d;
+            --err: #b91c1c;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0f172a;
+                --fg: #f1f5f9;
+                --accent: #60a5fa;
+                --card-bg: #1e293b;
+                --text-muted: #94a3b8;
+                --border: #334155;
+                --ok: #4ade80;
+                --err: #f87171;
+                color-scheme: dark;
+            }
+        }
+        :root[data-theme="dark"] {
+            --bg: #0f172a;
+            --fg: #f1f5f9;
+            --accent: #60a5fa;
+            --card-bg: #1e293b;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --ok: #4ade80;
+            --err: #f87171;
+            color-scheme: dark;
+        }
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            line-height: 1.6;
+        }
+        nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        nav .brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            text-decoration: none;
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav .nav-links a:hover, nav .nav-links a.active {
+            color: var(--accent);
+        }
+        header { padding: 2.5rem 1rem 1.5rem; text-align: center; }
+        h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+        .tool {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            max-width: 900px;
+            margin: 0 auto 2rem;
+        }
+        label.block { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.35rem; }
+        textarea {
+            width: 100%;
+            min-height: 220px;
+            box-sizing: border-box;
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--fg);
+            font-size: 0.95rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            resize: vertical;
+            white-space: pre;
+            overflow: auto;
+        }
+        textarea:focus { outline: 2px solid var(--accent); }
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+            margin: 1rem 0;
+        }
+        button {
+            padding: 0.55rem 1rem;
+            border-radius: 6px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        button:hover { opacity: 0.9; }
+        button.secondary { background: var(--text-muted); }
+        select {
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--fg);
+            font-size: 0.95rem;
+        }
+        #status { min-height: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; word-break: break-word; }
+        #status.ok { color: var(--ok); }
+        #status.err { color: var(--err); }
+        .seo-content {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+        }
+        .seo-content h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--fg);
+        }
+        .seo-content p { color: var(--text-muted); margin-bottom: 1rem; }
+        .faq-item { margin-bottom: 1.25rem; }
+        .faq-item h3 { font-size: 1.1rem; margin-bottom: 0.35rem; color: var(--fg); }
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="brand">Nufevi</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Image Compressor</a></li>
+            <li><a href="qr-code.html">QR Code Generator</a></li>
+            <li><a href="word-counter.html">Word Counter</a></li>
+            <li><a href="unit-converter.html">Unit Converter</a></li>
+            <li><a href="password-generator.html">Password Generator</a></li>
+            <li><a href="json-formatter.html" class="active">JSON Formatter</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Free JSON Formatter and Validator</h1>
+        <p class="subtitle">Paste your JSON to format it, minify it, or find errors.</p>
+    </header>
+
+    <main>
+        <div class="tool">
+            <label class="block" for="input">Your JSON</label>
+            <textarea id="input" placeholder='Paste JSON here, for example: {"name":"Nufevi","tools":[1,2,3]}' spellcheck="false"></textarea>
+
+            <div class="actions">
+                <button id="format-btn">Format</button>
+                <button id="minify-btn">Minify</button>
+                <label for="indent" style="font-size:0.9rem;color:var(--text-muted);">Indent:</label>
+                <select id="indent">
+                    <option value="2">2 spaces</option>
+                    <option value="4">4 spaces</option>
+                    <option value="tab">Tab</option>
+                </select>
+                <button id="copy-btn" class="secondary">Copy result</button>
+                <button id="clear-btn" class="secondary">Clear</button>
+            </div>
+
+            <div id="status"></div>
+
+            <label class="block" for="output">Result</label>
+            <textarea id="output" readonly spellcheck="false"></textarea>
+        </div>
+
+        <section class="seo-content">
+            <h2>How to format JSON online</h2>
+            <p>Paste your JSON into the first box. Click Format to turn compact or messy JSON into a clean, indented layout that is easy to read, and choose two spaces, four spaces or a tab for the indentation. Click Minify to remove all extra spaces and line breaks, which gives the shortest version of the same data. If your JSON has a mistake, such as a missing comma, a missing quote or an extra bracket, the tool shows an error message under the buttons instead of a result. Because formatting only works on valid JSON, a successful result also tells you that your JSON is valid. Use the Copy result button to copy the output, or Clear to start again.</p>
+
+            <h2>Why use this JSON formatter</h2>
+            <p>JSON is used by many websites, apps and APIs to send data, and it is often delivered as one long line that is hard to read. A formatter lets you see the structure of the data, find a specific value, and spot errors before they cause problems in your code. Developers, testers, students and people who work with data exports all run into this. This tool runs in your browser using the JSON functions built into JavaScript, so you do not need to install anything or create an account, and your text is not sent to a server by this page.</p>
+
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>Is this JSON formatter free?</h3>
+                <p>Yes. You can use it as often as you like without paying and without creating an account.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Is my JSON uploaded anywhere?</h3>
+                <p>No. The formatting happens in your browser, and this page does not send your JSON to a server.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What does the error message mean?</h3>
+                <p>The message comes from your browser's JSON parser and describes the first problem it found, for example an unexpected character or the end of the data arriving too early. Check the text near the position it mentions, and look for missing commas, missing quotes or extra brackets.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Does formatting change my data?</h3>
+                <p>The values and the order of the keys stay the same, but very large numbers beyond what JavaScript can store exactly may lose precision, and extra spaces between items are removed or rebuilt. Always keep a copy of your original data for important work.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        The formatting runs in your browser.
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this JSON formatter free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can use it as often as you like without paying and without creating an account."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my JSON uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The formatting happens in your browser, and this page does not send your JSON to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the error message mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The message comes from your browser's JSON parser and describes the first problem it found, for example an unexpected character or the end of the data arriving too early. Check the text near the position it mentions, and look for missing commas, missing quotes or extra brackets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does formatting change my data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The values and the order of the keys stay the same, but very large numbers beyond what JavaScript can store exactly may lose precision, and extra spaces between items are removed or rebuilt. Always keep a copy of your original data for important work."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script>
+        var inputEl = document.getElementById('input');
+        var outputEl = document.getElementById('output');
+        var statusEl = document.getElementById('status');
+        var indentEl = document.getElementById('indent');
+
+        function setStatus(text, cls) {
+            statusEl.textContent = text;
+            statusEl.className = cls || '';
+        }
+
+        function run(mode) {
+            var raw = inputEl.value;
+            if (!raw.trim()) {
+                outputEl.value = '';
+                setStatus('Paste some JSON first.', 'err');
+                return;
+            }
+            try {
+                var data = JSON.parse(raw);
+                var indent = indentEl.value === 'tab' ? '\t' : Number(indentEl.value);
+                outputEl.value = mode === 'minify' ? JSON.stringify(data) : JSON.stringify(data, null, indent);
+                setStatus(mode === 'minify' ? 'Valid JSON. Minified.' : 'Valid JSON. Formatted.', 'ok');
+            } catch (e) {
+                outputEl.value = '';
+                setStatus('Invalid JSON: ' + e.message, 'err');
+            }
+        }
+
+        document.getElementById('format-btn').addEventListener('click', function () { run('format'); });
+        document.getElementById('minify-btn').addEventListener('click', function () { run('minify'); });
+
+        document.getElementById('clear-btn').addEventListener('click', function () {
+            inputEl.value = '';
+            outputEl.value = '';
+            setStatus('', '');
+            inputEl.focus();
+        });
+
+        document.getElementById('copy-btn').addEventListener('click', function () {
+            var btn = document.getElementById('copy-btn');
+            if (!outputEl.value) {
+                setStatus('Nothing to copy yet. Click Format or Minify first.', 'err');
+                return;
+            }
+            var done = function () {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy result'; }, 1500);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(outputEl.value).then(done);
+            } else {
+                outputEl.select();
+                document.execCommand('copy');
+                done();
+            }
+        });
+    </script>
+</body>
+</html>
