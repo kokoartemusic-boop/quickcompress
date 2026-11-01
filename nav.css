@@ -1,0 +1,23 @@
+nav { flex-wrap: wrap; }
+.menu-toggle {
+    display: none;
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+@media (max-width: 760px) {
+    nav { padding: 0.75rem 1rem !important; }
+    .menu-toggle { display: inline-block; }
+    nav .nav-links {
+        display: none !important;
+        flex-direction: column;
+        width: 100%;
+        gap: 0.75rem !important;
+        padding-top: 0.75rem !important;
+    }
+    nav .nav-links.open { display: flex !important; }
+}
