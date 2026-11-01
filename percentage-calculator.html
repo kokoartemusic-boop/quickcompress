@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Percentage Calculator Online - Percent of, Percent Change</title>
+    <meta name="description" content="Calculate percentages instantly. Find X% of a number, what percent one number is of another, and percentage increase or decrease. Free online calculator.">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --fg: #1e293b;
+            --accent: #2563eb;
+            --card-bg: #ffffff;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0f172a;
+                --fg: #f1f5f9;
+                --accent: #60a5fa;
+                --card-bg: #1e293b;
+                --text-muted: #94a3b8;
+                --border: #334155;
+                color-scheme: dark;
+            }
+        }
+        :root[data-theme="dark"] {
+            --bg: #0f172a;
+            --fg: #f1f5f9;
+            --accent: #60a5fa;
+            --card-bg: #1e293b;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            color-scheme: dark;
+        }
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            line-height: 1.6;
+        }
+        nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        nav .brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--fg);
+            text-decoration: none;
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav .nav-links a:hover, nav .nav-links a.active {
+            color: var(--accent);
+        }
+        header { padding: 2.5rem 1rem 1.5rem; text-align: center; }
+        h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+        .tool {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .card h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
+        .line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+        input[type="number"] {
+            width: 7.5rem;
+            padding: 0.55rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--fg);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        input:focus { outline: 2px solid var(--accent); }
+        .result {
+            margin-top: 0.85rem;
+            padding: 0.75rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            word-break: break-word;
+        }
+        .seo-content {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 1rem;
+        }
+        .seo-content h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--fg);
+        }
+        .seo-content p { color: var(--text-muted); margin-bottom: 1rem; }
+        .faq-item { margin-bottom: 1.25rem; }
+        .faq-item h3 { font-size: 1.1rem; margin-bottom: 0.35rem; color: var(--fg); }
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+    <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="brand">Nufevi</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Image Compressor</a></li>
+            <li><a href="qr-code.html">QR Code Generator</a></li>
+            <li><a href="word-counter.html">Word Counter</a></li>
+            <li><a href="unit-converter.html">Unit Converter</a></li>
+            <li><a href="password-generator.html">Password Generator</a></li>
+            <li><a href="json-formatter.html">JSON Formatter</a></li>
+            <li><a href="percentage-calculator.html" class="active">Percentage Calculator</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Free Percentage Calculator</h1>
+        <p class="subtitle">Three quick calculators in one place. Results update as you type.</p>
+    </header>
+
+    <main>
+        <div class="tool">
+            <div class="card">
+                <h2>What is X% of Y?</h2>
+                <div class="line">
+                    What is <input type="number" id="a1" step="any" value="20" aria-label="Percent"> % of
+                    <input type="number" id="b1" step="any" value="150" aria-label="Number"> ?
+                </div>
+                <div class="result" id="r1"></div>
+            </div>
+
+            <div class="card">
+                <h2>X is what percent of Y?</h2>
+                <div class="line">
+                    <input type="number" id="a2" step="any" value="30" aria-label="First number"> is what percent of
+                    <input type="number" id="b2" step="any" value="150" aria-label="Second number"> ?
+                </div>
+                <div class="result" id="r2"></div>
+            </div>
+
+            <div class="card">
+                <h2>Percentage increase or decrease</h2>
+                <div class="line">
+                    From <input type="number" id="a3" step="any" value="80" aria-label="Old value"> to
+                    <input type="number" id="b3" step="any" value="100" aria-label="New value">
+                </div>
+                <div class="result" id="r3"></div>
+            </div>
+        </div>
+
+        <section class="seo-content">
+            <h2>How to calculate percentages online</h2>
+            <p>This page has three calculators, one for each of the most common percentage questions. In the first, type a percentage and a number to find that percentage of the number, for example 20 percent of 150. In the second, type two numbers to find out what percent the first one is of the second, for example 30 out of 150. In the third, type an old value and a new value to see the percentage increase or decrease between them, which is useful for prices, salaries, grades and statistics. The answers appear right away and change as you type, so there is no button to press. Each box starts with an example that you can replace with your own numbers.</p>
+
+            <h2>Why use this percentage calculator</h2>
+            <p>Percentages come up in shopping discounts, tips, taxes, interest, school marks and business reports, and a small slip in the arithmetic can lead to a wrong decision. This calculator does the work for you and shows the result clearly with up to six decimal places. It works on phones, tablets and computers, and you do not need to install anything or create an account. The calculation runs in your browser on this page. It is a quick way to check a number before you rely on it, although for financial or legal decisions you should also verify important figures yourself.</p>
+
+            <h2>Frequently asked questions</h2>
+
+            <div class="faq-item">
+                <h3>Is this percentage calculator free?</h3>
+                <p>Yes. You can use it as often as you like without paying and without creating an account.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I find a percentage of a number?</h3>
+                <p>Divide the percentage by 100 and multiply the result by the number. For example, 20 percent of 150 is 20 divided by 100, times 150, which equals 30.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How is percentage change calculated?</h3>
+                <p>Subtract the old value from the new value, divide the result by the old value, then multiply by 100. A positive answer is an increase and a negative answer is a decrease.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Why can I not use zero in some boxes?</h3>
+                <p>Some calculations divide by one of your numbers, and dividing by zero has no answer. The second calculator needs a second number that is not zero, and the third needs an old value that is not zero.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        The calculations run in your browser.
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this percentage calculator free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can use it as often as you like without paying and without creating an account."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I find a percentage of a number?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Divide the percentage by 100 and multiply the result by the number. For example, 20 percent of 150 is 20 divided by 100, times 150, which equals 30."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is percentage change calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Subtract the old value from the new value, divide the result by the old value, then multiply by 100. A positive answer is an increase and a negative answer is a decrease."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why can I not use zero in some boxes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some calculations divide by one of your numbers, and dividing by zero has no answer. The second calculator needs a second number that is not zero, and the third needs an old value that is not zero."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script>
+        function num(id) {
+            var v = document.getElementById(id).value;
+            if (v === '' || isNaN(Number(v))) return null;
+            return Number(v);
+        }
+        function fmt(n) {
+            return n.toLocaleString('en-US', { maximumFractionDigits: 6 });
+        }
+        function calc() {
+            var a1 = num('a1'), b1 = num('b1');
+            var r1 = document.getElementById('r1');
+            if (a1 === null || b1 === null) {
+                r1.textContent = 'Enter two numbers';
+            } else {
+                r1.textContent = fmt(a1) + '% of ' + fmt(b1) + ' = ' + fmt(a1 / 100 * b1);
+            }
+
+            var a2 = num('a2'), b2 = num('b2');
+            var r2 = document.getElementById('r2');
+            if (a2 === null || b2 === null) {
+                r2.textContent = 'Enter two numbers';
+            } else if (b2 === 0) {
+                r2.textContent = 'The second number cannot be zero';
+            } else {
+                r2.textContent = fmt(a2) + ' is ' + fmt(a2 / b2 * 100) + '% of ' + fmt(b2);
+            }
+
+            var a3 = num('a3'), b3 = num('b3');
+            var r3 = document.getElementById('r3');
+            if (a3 === null || b3 === null) {
+                r3.textContent = 'Enter two numbers';
+            } else if (a3 === 0) {
+                r3.textContent = 'The old value cannot be zero';
+            } else {
+                var change = (b3 - a3) / Math.abs(a3) * 100;
+                if (change > 0) {
+                    r3.textContent = 'Increase of ' + fmt(change) + '%';
+                } else if (change < 0) {
+                    r3.textContent = 'Decrease of ' + fmt(Math.abs(change)) + '%';
+                } else {
+                    r3.textContent = 'No change (0%)';
+                }
+            }
+        }
+        ['a1', 'b1', 'a2', 'b2', 'a3', 'b3'].forEach(function (id) {
+            document.getElementById(id).addEventListener('input', calc);
+        });
+        calc();
+    </script>
+    <script src="nav.js"></script>
+</body>
+</html>
